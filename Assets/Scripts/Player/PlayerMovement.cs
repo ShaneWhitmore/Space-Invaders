@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
 
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private Rigidbody ShipRb;
     public bool isAlive = true;
     [SerializeField] private float shipAcceleration = 5f;
 
@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        ShipRb = GetComponent<Rigidbody>();
     }
 
     void OnEnable()
@@ -37,10 +37,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (PlayerInput_Manager.instance.WasShootPressedThisFrame())
-        {
-            Debug.Log("Shoot button was pressed");
-        }
         if (isAlive)
         {
             HandleShipMovement();
@@ -54,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
 
         float inputX = input.x;
 
-        rb.linearVelocity = new Vector2(inputX * shipAcceleration, 0f);
+        ShipRb.linearVelocity = new Vector2(inputX * shipAcceleration, 0f);
 
     }
 }
