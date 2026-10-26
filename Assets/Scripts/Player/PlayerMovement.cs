@@ -52,7 +52,6 @@ public class PlayerMovement : MonoBehaviour
 
 
         Vector3 viewPortPos = Camera.main.WorldToViewportPoint(transform.position);
-        //Debug.Log(viewPortPos);
 
 
         if ((viewPortPos.x > 1 && inputX > 0) || (viewPortPos.x < 0 && inputX < 0))
