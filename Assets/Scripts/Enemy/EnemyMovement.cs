@@ -2,6 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class EnemyMovement : MonoBehaviour
 
 
     [SerializeField] private float initial_Move_Speed = 3f;
+    [SerializeField] private float enemyDropDownDistance = 0.5f;
 
 
 
@@ -62,6 +64,14 @@ public class EnemyMovement : MonoBehaviour
     private void OnMoveEnemyDown()
     {
         Debug.Log("Moving the enemy down now");
+
+        moveLeft = !moveLeft;
+
+        Vector2 enemyCurrentPos = enemy_rb.position;
+
+        enemy_rb.position = new Vector2(enemyCurrentPos.x , enemyCurrentPos.y + enemyDropDownDistance);
+
+
     }
 
 
@@ -97,17 +107,16 @@ public class EnemyMovement : MonoBehaviour
 
         Vector3 viewPortPos = Camera.main.WorldToViewportPoint(transform.position);
 
-        if (viewPortPos.x >= 1)
-        {
-            moveLeft = true;
-            Edge_of_Screen_Reached();
-        }
-        else if (viewPortPos.x <= 0)
-        {
-            moveLeft = false;
-            Edge_of_Screen_Reached();
-        }
+        Debug.Log(enemy_rb.position);
 
+
+        // broadcast to the gameManager that the enemy reached the edge of the screen
+        // this will then broadcast to all enemies to change direction and move down the screen
+        if (viewPortPos.x >= 1 || viewPortPos.x <= 0)
+        {
+            Edge_of_Screen_Reached();
+        }
+       
         if (moveLeft)
         {
             enemy_rb.linearVelocity = new Vector2( - initial_Move_Speed, 0f);
