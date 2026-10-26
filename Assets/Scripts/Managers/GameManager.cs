@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
 
 
-
+    // Observer Pattern Method tied to the edge detection broadcast from the enemy gameObject
     private void OnScreenEdgeDetection()
     {
         Debug.Log("Edge of Screen Reached");
@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
         MoveEnemyDown();
     }
 
+
+    // Observer Pattern instructs Enemies to change direction and move down the screen
     public void MoveEnemyDown()
     {
         move_Enemy_Down?.Invoke();
