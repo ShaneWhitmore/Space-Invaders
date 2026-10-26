@@ -50,7 +50,19 @@ public class PlayerMovement : MonoBehaviour
 
         float inputX = input.x;
 
-        ShipRb.linearVelocity = new Vector2(inputX * shipAcceleration, 0f);
 
+        Vector3 viewPortPos = Camera.main.WorldToViewportPoint(transform.position);
+        //Debug.Log(viewPortPos);
+
+
+        if ((viewPortPos.x > 1 && inputX > 0) || (viewPortPos.x < 0 && inputX < 0))
+        {
+            ShipRb.linearVelocity = new Vector2(0f,0f);
+        }
+        else
+        {
+            ShipRb.linearVelocity = new Vector2(inputX * shipAcceleration, 0f);
+
+        }
     }
 }
