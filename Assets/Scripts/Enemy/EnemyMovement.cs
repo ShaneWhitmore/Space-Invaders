@@ -11,7 +11,7 @@ public class EnemyMovement : MonoBehaviour
 
     // (observer pattern ) broadcast if the enemy reaches the edge of the screen and which edge that is (Enemy Manager will subscribe to this )
 
-    public event Action Edge_Detected;
+    public event Action<float> Edge_Detected;
 
     
 
@@ -63,21 +63,21 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnMoveEnemyDown()
     {
-        Debug.Log("Moving the enemy down now");
+        //Debug.Log("Moving the enemy down now");
 
         moveLeft = !moveLeft;
 
         Vector2 enemyCurrentPos = enemy_rb.position;
 
-        enemy_rb.position = new Vector2(enemyCurrentPos.x , enemyCurrentPos.y + enemyDropDownDistance);
+        enemy_rb.position = new Vector2(enemyCurrentPos.x , enemyCurrentPos.y - enemyDropDownDistance);
 
 
     }
 
 
-    public void Edge_of_Screen_Reached()
+    public void Edge_of_Screen_Reached(float edge)
     {
-        Edge_Detected?.Invoke();
+        Edge_Detected?.Invoke(edge);
     }
 
 
@@ -107,14 +107,14 @@ public class EnemyMovement : MonoBehaviour
 
         Vector3 viewPortPos = Camera.main.WorldToViewportPoint(transform.position);
 
-        Debug.Log(enemy_rb.position);
+        //Debug.Log(enemy_rb.position);
 
 
         // broadcast to the gameManager that the enemy reached the edge of the screen
         // this will then broadcast to all enemies to change direction and move down the screen
         if (viewPortPos.x >= 1 || viewPortPos.x <= 0)
         {
-            Edge_of_Screen_Reached();
+            Edge_of_Screen_Reached(viewPortPos.x);
         }
        
         if (moveLeft)
