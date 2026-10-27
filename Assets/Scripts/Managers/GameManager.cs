@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private EnemyMovement enemyMovement;
     [SerializeField] private bool edge_detection_invocation = false;
+    // if edge_detection_invocation = false , the enemy has hit the left wall , if edge_detection_invocation = true , enemy has hit the right wall
 
 
     public event Action move_Enemy_Down;
@@ -60,11 +61,28 @@ public class GameManager : MonoBehaviour
 
 
     // Observer Pattern Method tied to the edge detection broadcast from the enemy gameObject
-    private void OnScreenEdgeDetection()
+    private void OnScreenEdgeDetection(float detected_edge)
     {
-        Debug.Log("Edge of Screen Reached");
+        Debug.Log(detected_edge);
+        bool detected_edge_bool_conversion = false;
 
-        MoveEnemyDown();
+
+        
+
+        if(detected_edge >= 1)
+        {
+            detected_edge_bool_conversion = true;
+        }
+        else if(detected_edge <= 0)
+        {
+            detected_edge_bool_conversion = false;
+        }
+
+        if(detected_edge_bool_conversion != edge_detection_invocation)
+        {
+            edge_detection_invocation = detected_edge_bool_conversion;
+            MoveEnemyDown();
+        }        
     }
 
 
