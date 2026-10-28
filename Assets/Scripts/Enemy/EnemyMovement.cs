@@ -26,7 +26,7 @@ public class EnemyMovement : MonoBehaviour
 
 
 
-    [SerializeField] private GameManager gameManager;
+    public GameManager gameManager;
 
     void Start()
     {
@@ -41,6 +41,16 @@ public class EnemyMovement : MonoBehaviour
             gameManager.move_Enemy_Down += OnMoveEnemyDown;
         }
     }
+
+
+    public void Initialize(GameManager manager)
+    {
+        gameManager = manager;
+
+        gameManager.move_Enemy_Down += OnMoveEnemyDown;
+    }
+
+
 
     void OnDestroy()
     {
@@ -77,6 +87,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void Edge_of_Screen_Reached(float edge)
     {
+        Debug.Log("Invoking observer");
         Edge_Detected?.Invoke(edge);
     }
 
@@ -107,14 +118,16 @@ public class EnemyMovement : MonoBehaviour
 
         Vector3 viewPortPos = Camera.main.WorldToViewportPoint(transform.position);
 
-        //Debug.Log(enemy_rb.position);
+        Debug.Log(viewPortPos);
 
 
         // broadcast to the gameManager that the enemy reached the edge of the screen
         // this will then broadcast to all enemies to change direction and move down the screen
         if (viewPortPos.x >= 1 || viewPortPos.x <= 0)
         {
+            Debug.Log("Hit and edge");
             Edge_of_Screen_Reached(viewPortPos.x);
+
         }
        
         if (moveLeft)
