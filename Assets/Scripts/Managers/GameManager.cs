@@ -9,11 +9,23 @@ public class GameManager : MonoBehaviour
     public static GameManager instance { get; private set; }
 
     [SerializeField] private EnemyMovement enemyMovement;
+    [SerializeField] private Transform enemySpawnPoint;
     [SerializeField] private bool edge_detection_invocation = false;
     // if edge_detection_invocation = false , the enemy has hit the left wall , if edge_detection_invocation = true , enemy has hit the right wall
 
 
     public event Action move_Enemy_Down;
+
+
+
+    int spawnEnemy = 0;
+
+    
+
+
+    // game manager should spawn a fixed number of enemies, when an enemy dies it should invoke a method to inform the manager it died
+    // Game manager should have a method to subtract the number of enemies 
+    // if the number of enemies is 0 , move to next level (increment a level variable) which can be used for handling special enemies spawning once per round
 
 
 
@@ -55,6 +67,20 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
+        if(spawnEnemy == 0)
+        {
+            EnemyMovement newEnemy = Instantiate(enemyMovement, enemySpawnPoint.position , Quaternion.identity);
+            newEnemy.gameManager = this;
+            
+
+            newEnemy.Initialize(this);
+
+            newEnemy.Edge_Detected += OnScreenEdgeDetection;
+
+            spawnEnemy = 1;
+        }
 
     }
 
