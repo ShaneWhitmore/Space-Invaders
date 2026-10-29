@@ -8,8 +8,11 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance { get; private set; }
 
+    [SerializeField] private GameOverTarget gameOverTarget;
     [SerializeField] private EnemyMovement enemyMovement;
     [SerializeField] private Transform enemySpawnPoint;
+
+
     [SerializeField] private bool edge_detection_invocation = false;
     // if edge_detection_invocation = false , the enemy has hit the left wall , if edge_detection_invocation = true , enemy has hit the right wall
 
@@ -69,7 +72,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-
+        gameOverTarget.enemyEnteredTarget += OnEnemyEnteredGameOver;
     }
 
     void OnDestroy()
@@ -80,6 +83,8 @@ public class GameManager : MonoBehaviour
             enemyMovement.Enemy_Was_Destroyed -= OnEnemyDestroyed;
 
         }
+        gameOverTarget.enemyEnteredTarget += OnEnemyEnteredGameOver;
+
     }
 
 
@@ -180,6 +185,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnEnemyEnteredGameOver()
+    {
+        //Disable Player Movement
+        // Invoke Game Over method
+
+        Debug.Log("Enemy entered end (called from gameManager)");
+    }
+
 
     void RespawnPlayer()
     {
@@ -189,6 +202,9 @@ public class GameManager : MonoBehaviour
 
     void GameOver()
     {
+
+        //Stop the Game
+        // Display "Game Over"
 
     }
 
