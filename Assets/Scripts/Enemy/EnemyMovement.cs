@@ -12,6 +12,8 @@ public class EnemyMovement : MonoBehaviour
     // (observer pattern ) broadcast if the enemy reaches the edge of the screen and which edge that is (Enemy Manager will subscribe to this )
 
     public event Action<float> Edge_Detected;
+    public event Action Enemy_Was_Destroyed;
+
 
     
 
@@ -26,7 +28,7 @@ public class EnemyMovement : MonoBehaviour
 
 
 
-    public GameManager gameManager;
+    [SerializeField] private GameManager gameManager;
 
     void Start()
     {
@@ -70,6 +72,11 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
+    public Vector2 GetEnemyLocation()
+    {
+        return enemy_rb.position;
+    }
+
 
     private void OnMoveEnemyDown()
     {
@@ -87,25 +94,32 @@ public class EnemyMovement : MonoBehaviour
 
     public void Edge_of_Screen_Reached(float edge)
     {
-        Debug.Log("Invoking observer");
         Edge_Detected?.Invoke(edge);
+    }
+
+    public void Enemy_Destroyed()
+    {
+        Enemy_Was_Destroyed?.Invoke();
     }
 
 
     private void OnTriggerEnter2D(Collider2D colission)
     {
 
-        Debug.Log(colission.name);
+        //Debug.Log(colission.name);
 
         if (colission.CompareTag("Bullet"))
         {
-            Debug.Log("Enemy was hit");
+            //Debug.Log("Enemy was hit");
             Destroy(colission.gameObject);
 
             isAlive = false;
+            Enemy_Destroyed();
+
+            Destroy(gameObject);
         }
 
-        Destroy(gameObject);
+        
     }
 
 
@@ -118,16 +132,13 @@ public class EnemyMovement : MonoBehaviour
 
         Vector3 viewPortPos = Camera.main.WorldToViewportPoint(transform.position);
 
-        Debug.Log(viewPortPos);
 
 
         // broadcast to the gameManager that the enemy reached the edge of the screen
         // this will then broadcast to all enemies to change direction and move down the screen
         if (viewPortPos.x >= 1 || viewPortPos.x <= 0)
         {
-            Debug.Log("Hit and edge");
             Edge_of_Screen_Reached(viewPortPos.x);
-
         }
        
         if (moveLeft)

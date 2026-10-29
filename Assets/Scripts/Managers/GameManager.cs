@@ -18,9 +18,20 @@ public class GameManager : MonoBehaviour
 
 
 
-    int spawnEnemy = 0;
+    [Header("Game Variables")]
+    [SerializeField] private int round = 0;
 
-    
+
+
+    [Header("Enemy Variables")]
+    [SerializeField] private int enemysToSpawn = 11;
+
+    [SerializeField] private float enemySpawnOffset = 1f;
+
+
+    [SerializeField] private int spawnedEnemies = 0;
+
+
 
 
     // game manager should spawn a fixed number of enemies, when an enemy dies it should invoke a method to inform the manager it died
@@ -29,10 +40,7 @@ public class GameManager : MonoBehaviour
 
 
 
-    void Start()
-    {
 
-    }
 
 
 
@@ -52,7 +60,14 @@ public class GameManager : MonoBehaviour
         if (enemyMovement != null)
         {
             enemyMovement.Edge_Detected += OnScreenEdgeDetection;
+            enemyMovement.Enemy_Was_Destroyed += OnEnemyDestroyed;
         }
+    }
+
+
+    void Start()
+    {
+
     }
 
     void OnDestroy()
@@ -60,6 +75,8 @@ public class GameManager : MonoBehaviour
         if (enemyMovement != null)
         {
             enemyMovement.Edge_Detected -= OnScreenEdgeDetection;
+            enemyMovement.Enemy_Was_Destroyed -= OnEnemyDestroyed;
+
         }
     }
 
@@ -67,19 +84,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
 
-        if(spawnEnemy == 0)
+
+        if (spawnedEnemies == 0)
         {
-            EnemyMovement newEnemy = Instantiate(enemyMovement, enemySpawnPoint.position , Quaternion.identity);
-            newEnemy.gameManager = this;
-            
-
-            newEnemy.Initialize(this);
-
-            newEnemy.Edge_Detected += OnScreenEdgeDetection;
-
-            spawnEnemy = 1;
+            SpawnNewEnemies();
+            edge_detection_invocation = false; 
+            round++;
         }
 
     }
@@ -89,26 +100,32 @@ public class GameManager : MonoBehaviour
     // Observer Pattern Method tied to the edge detection broadcast from the enemy gameObject
     private void OnScreenEdgeDetection(float detected_edge)
     {
-        Debug.Log(detected_edge);
+        //Debug.Log(detected_edge);
         bool detected_edge_bool_conversion = false;
 
 
-        
 
-        if(detected_edge >= 1)
+
+        if (detected_edge >= 1)
         {
             detected_edge_bool_conversion = true;
         }
-        else if(detected_edge <= 0)
+        else if (detected_edge <= 0)
         {
             detected_edge_bool_conversion = false;
         }
 
-        if(detected_edge_bool_conversion != edge_detection_invocation)
+        if (detected_edge_bool_conversion != edge_detection_invocation)
         {
             edge_detection_invocation = detected_edge_bool_conversion;
             MoveEnemyDown();
-        }        
+        }
+    }
+
+    private void OnEnemyDestroyed()
+    {
+        spawnedEnemies--;
+        Debug.Log(spawnedEnemies);
     }
 
 
@@ -120,16 +137,37 @@ public class GameManager : MonoBehaviour
 
 
 
-    void ChangeEnemyDirection()
-    {
-
-
-    }
-
-
     void SpawnNewEnemies()
     {
 
+        Vector2 lastEnemySpawnPos = new Vector2(enemySpawnPoint.position.x, enemySpawnPoint.position.y);
+
+
+
+        // take a linked list approach using the previously spawned enemies position as a reference for spawning the next enemy
+        for (int i = 0; i < enemysToSpawn; i++)
+        {
+            Vector2 newSpawnPos = new Vector2(lastEnemySpawnPos.x + enemySpawnOffset, lastEnemySpawnPos.y);
+
+
+            EnemyMovement newEnemy = Instantiate(enemyMovement, newSpawnPos, Quaternion.identity);
+
+
+            newEnemy.Initialize(this);
+
+            newEnemy.Edge_Detected += OnScreenEdgeDetection;
+            newEnemy.Enemy_Was_Destroyed += OnEnemyDestroyed;
+
+
+            lastEnemySpawnPos = newEnemy.GetEnemyLocation();
+
+
+            spawnedEnemies++;
+
+            Debug.Log(spawnedEnemies);
+
+
+        }
     }
 
 

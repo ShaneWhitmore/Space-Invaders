@@ -155,7 +155,7 @@ MonoBehaviour:
   enemy_rb: {fileID: 502328633313739338}
   isAlive: 0
   moveLeft: 0
-  initial_Move_Speed: 3
+  initial_Move_Speed: 2
   enemyDropDownDistance: 0.5
   gameManager: {fileID: 0}
 --- !u!1 &4244651472979832671
