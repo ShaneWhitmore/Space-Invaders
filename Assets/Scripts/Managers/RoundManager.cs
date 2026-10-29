@@ -9,6 +9,8 @@ public class RoundManager : MonoBehaviour
 
     [Header("Text Fields")]
     [SerializeField] private TextMeshProUGUI roundTextField;
+    [SerializeField] private TextMeshProUGUI gameOverTextField;
+
 
 
     [SerializeField] private int round = 0;
@@ -30,6 +32,8 @@ public class RoundManager : MonoBehaviour
     void Start()
     {
         roundTextField.text = "Round: " + round.ToString();
+        gameOverTextField.text = null;
+
     }
 
     // Update is called once per frame
@@ -43,5 +47,13 @@ public class RoundManager : MonoBehaviour
     {
         round = new_round;
         roundTextField.text = "Round: " + round.ToString();
+    }
+
+
+    public void GameOver()
+    {
+
+        gameOverTextField.text = "Game Over";
+
     }
 }
