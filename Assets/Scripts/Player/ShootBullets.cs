@@ -8,6 +8,8 @@ public class ShootBullets : MonoBehaviour
     [SerializeField] private Rigidbody2D bulletPrefab;
     [SerializeField] private float bulletVelocity = 5f;
 
+    [SerializeField] private int maxBulletCount = 2;
+
 
 
     void Start()
@@ -22,12 +24,28 @@ public class ShootBullets : MonoBehaviour
 
     private void HandleShooting()
     {
-        if(PlayerInput_Manager.instance.WasShootPressedThisFrame())
+        if (PlayerInput_Manager.instance.WasShootPressedThisFrame())
         {
-            Rigidbody2D bullet = Instantiate(bulletPrefab, bulletSpawner.position , Quaternion.identity);
 
-            bullet.AddForce(bulletVelocity *transform.up, ForceMode2D.Impulse);
-            
+            //First check if an instance of bullet already exists in the scene
+            // if it doesnt then spawn a new bullet
+            GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+
+            if (bullets.Length == maxBulletCount)
+            {
+                return;
+            }
+            else
+            {
+                Rigidbody2D bullet = Instantiate(bulletPrefab, bulletSpawner.position, Quaternion.identity);
+
+                bullet.AddForce(bulletVelocity * transform.up, ForceMode2D.Impulse);
+
+            }
+
+
+
+
         }
     }
 }

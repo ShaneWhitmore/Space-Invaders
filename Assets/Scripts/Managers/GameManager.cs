@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     public event Action move_Enemy_Down;
 
+    public event Action<int> new_round;
+
 
 
     [Header("Game Variables")]
@@ -89,8 +91,8 @@ public class GameManager : MonoBehaviour
         if (spawnedEnemies == 0)
         {
             SpawnNewEnemies();
-            edge_detection_invocation = false; 
-            round++;
+            edge_detection_invocation = false;
+            IncrementRound();
         }
 
     }
@@ -125,7 +127,7 @@ public class GameManager : MonoBehaviour
     private void OnEnemyDestroyed()
     {
         spawnedEnemies--;
-        Debug.Log(spawnedEnemies);
+        // Debug.Log(spawnedEnemies);
     }
 
 
@@ -133,6 +135,15 @@ public class GameManager : MonoBehaviour
     public void MoveEnemyDown()
     {
         move_Enemy_Down?.Invoke();
+    }
+
+    public void IncrementRound()
+    {
+        round++;
+        new_round?.Invoke(round);
+
+
+        Debug.Log("NEW ROUND: " + round);
     }
 
 
@@ -164,8 +175,7 @@ public class GameManager : MonoBehaviour
 
             spawnedEnemies++;
 
-            Debug.Log(spawnedEnemies);
-
+            //Debug.Log(spawnedEnemies);
 
         }
     }
