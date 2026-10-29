@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour
 
     public event Action move_Enemy_Down;
 
-    public event Action<int> new_round;
-
 
 
     [Header("Game Variables")]
@@ -145,7 +143,8 @@ public class GameManager : MonoBehaviour
     public void IncrementRound()
     {
         round++;
-        new_round?.Invoke(round);
+
+        RoundManager.instance.ChangeRound(round);
 
 
         Debug.Log("NEW ROUND: " + round);
