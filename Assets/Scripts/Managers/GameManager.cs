@@ -190,6 +190,7 @@ public class GameManager : MonoBehaviour
         // Invoke Game Over method
 
         Debug.Log("Enemy entered end (called from gameManager)");
+        GameOver();
     }
 
 
@@ -204,7 +205,7 @@ public class GameManager : MonoBehaviour
 
         //Stop the Game
         // Display "Game Over"
-
+        RoundManager.instance.GameOver();
     }
 
 }
