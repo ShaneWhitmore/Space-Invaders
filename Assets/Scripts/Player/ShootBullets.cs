@@ -39,6 +39,10 @@ public class ShootBullets : MonoBehaviour
             {
                 Rigidbody2D bullet = Instantiate(bulletPrefab, bulletSpawner.position, Quaternion.identity);
 
+
+                //Play audio source of bullet firing 
+
+                AudioManager.instance.PlayLaserAudioClip();
                 bullet.AddForce(bulletVelocity * transform.up, ForceMode2D.Impulse);
 
             }

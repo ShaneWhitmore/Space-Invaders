@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -33,6 +34,10 @@ public class GameManager : MonoBehaviour
 
 
     [SerializeField] private int spawnedEnemies = 0;
+
+
+    [Header("Player Variables")]
+    [SerializeField] private int playerLives = 3;
 
 
 
@@ -93,9 +98,9 @@ public class GameManager : MonoBehaviour
 
         if (spawnedEnemies == 0)
         {
-            SpawnNewEnemies();
             edge_detection_invocation = false;
             IncrementRound();
+            SpawnNewEnemies();
         }
 
     }
@@ -151,10 +156,8 @@ public class GameManager : MonoBehaviour
     }
 
 
-
     void SpawnNewEnemies()
     {
-
         Vector2 lastEnemySpawnPos = new Vector2(enemySpawnPoint.position.x, enemySpawnPoint.position.y);
 
 
@@ -196,6 +199,16 @@ public class GameManager : MonoBehaviour
 
     void RespawnPlayer()
     {
+        playerLives--;
+
+        if (playerLives == 0)
+        {
+            GameOver();
+        }
+        else
+        {
+            //Coroutine
+        }
 
     }
 
