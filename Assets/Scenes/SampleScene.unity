@@ -717,6 +717,7 @@ MonoBehaviour:
   enemySpawnPoint: {fileID: 86149770}
   edge_detection_invocation: 0
   round: 0
+  gameOver: 0
   enemysToSpawn: 11
   enemySpawnOffset: 1.5
   spawnedEnemies: 0
@@ -918,7 +919,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   roundTextField: {fileID: 2101127242}
   gameOverTextField: {fileID: 405823986}
-  livesTextField: {fileID: 0}
+  livesTextField: {fileID: 2082333842}
   round: 0
   current_Lives: 3
 --- !u!1 &1284658330
