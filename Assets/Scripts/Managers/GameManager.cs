@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using UnityEngine.SceneManagement;
+
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -24,6 +26,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Variables")]
     [SerializeField] private int round = 0;
+    [SerializeField] private bool gameOver;
+
+
 
 
 
@@ -76,6 +81,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         gameOverTarget.enemyEnteredTarget += OnEnemyEnteredGameOver;
+        gameOver = false;
+        playerLives = 3;
     }
 
     void OnDestroy()
@@ -95,14 +102,26 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
-
-        if (spawnedEnemies == 0)
+        if (gameObject && PlayerInput_Manager.instance.WasRestartPressedThisFrame())
         {
-            edge_detection_invocation = false;
-            IncrementRound();
-            SpawnNewEnemies();
+            StartCoroutine(Restart());
         }
 
+
+        if (gameOver == false)
+        {
+            if (spawnedEnemies == 0)
+            {
+                edge_detection_invocation = false;
+                IncrementRound();
+                SpawnNewEnemies();
+            }
+        }
+    }
+
+    public bool getGameOverVariable()
+    {
+        return gameOver;
     }
 
 
@@ -181,8 +200,6 @@ public class GameManager : MonoBehaviour
 
 
             spawnedEnemies++;
-
-            //Debug.Log(spawnedEnemies);
         }
     }
 
@@ -192,7 +209,7 @@ public class GameManager : MonoBehaviour
         // Invoke Game Over method
 
         Debug.Log("Enemy entered end (called from gameManager)");
-        GameOver();
+        StartCoroutine(GameOver());
     }
 
 
@@ -206,20 +223,46 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            //Coroutine
-
             RoundManager.instance.ChangeLivesCounter(playerLives);
         }
 
     }
 
-
-    void GameOver()
+    private IEnumerator Restart()
     {
+        gameOver = false;
 
-        //Stop the Game
+
+        RoundManager.instance.GameOver(gameOver);
+
+        //Restart Scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        yield return null;
+    }
+
+
+    private IEnumerator GameOver()
+    {
+        // Disable player movement
+        // Disable Enemy movement
+
+        PlayerInput_Manager.instance.OnGameOver();
+
+
+        //set some bool value to true for gameOver , check this against a button press in the Update method to restart the game
         // Display "Game Over"
-        RoundManager.instance.GameOver();
+        //Stop the Game
+
+
+
+
+
+        gameOver = true;
+        RoundManager.instance.GameOver(gameOver);
+
+        yield return null;
+
     }
 
 }

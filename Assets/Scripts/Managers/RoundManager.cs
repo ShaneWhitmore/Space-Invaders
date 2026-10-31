@@ -61,10 +61,18 @@ public class RoundManager : MonoBehaviour
     }
 
 
-    public void GameOver()
+    public void GameOver(bool isGameOver)
     {
+        if (isGameOver)
+        {
+            gameOverTextField.text = "Game Over";
+        }
+        else
+        {
+            gameOverTextField.text = null;
 
-        gameOverTextField.text = "Game Over";
+        }
+
 
     }
 }

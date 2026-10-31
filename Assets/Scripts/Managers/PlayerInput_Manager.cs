@@ -5,25 +5,25 @@ public class PlayerInput_Manager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public static PlayerInput_Manager instance {get ; private set; }
+    public static PlayerInput_Manager instance { get; private set; }
 
     public InputSystem_Actions inputActions;
 
     void Start()
     {
-        
+
     }
 
     void Awake()
     {
-        if(instance != null && instance != this)
+        if (instance != null && instance != this)
         {
-            Destroy(gameObject);  
-            return; 
+            Destroy(gameObject);
+            return;
         }
         else
         {
-            instance = this;    
+            instance = this;
         }
 
         inputActions = new InputSystem_Actions();
@@ -31,7 +31,7 @@ public class PlayerInput_Manager : MonoBehaviour
 
     void Update()
     {
-        
+
     }
 
     public void OnEnable()
@@ -56,8 +56,16 @@ public class PlayerInput_Manager : MonoBehaviour
         return inputActions.Player.Attack.WasPressedThisFrame();
     }
 
+    public bool WasRestartPressedThisFrame()
+    {
+        return inputActions.Player.Jump.WasPressedThisFrame();
+    }
 
 
-
+    public void OnGameOver()
+    {
+        inputActions.Player.Attack.Disable();
+        inputActions.Player.Move.Disable();
+    }
 
 }

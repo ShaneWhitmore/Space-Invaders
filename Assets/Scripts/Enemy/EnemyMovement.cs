@@ -15,7 +15,7 @@ public class EnemyMovement : MonoBehaviour
     public event Action Enemy_Was_Destroyed;
 
 
-    
+
 
     [SerializeField] private Rigidbody2D enemy_rb;
     [SerializeField] private bool isAlive;
@@ -25,6 +25,10 @@ public class EnemyMovement : MonoBehaviour
 
     [SerializeField] private float initial_Move_Speed = 3f;
     [SerializeField] private float enemyDropDownDistance = 0.5f;
+
+
+    [Header("Game Variables")]
+    [SerializeField] private bool gameOver;
 
 
 
@@ -38,7 +42,7 @@ public class EnemyMovement : MonoBehaviour
 
     void Awake()
     {
-        if(gameManager != null)
+        if (gameManager != null)
         {
             gameManager.move_Enemy_Down += OnMoveEnemyDown;
         }
@@ -56,7 +60,7 @@ public class EnemyMovement : MonoBehaviour
 
     void OnDestroy()
     {
-        if(gameManager != null)
+        if (gameManager != null)
         {
             gameManager.move_Enemy_Down -= OnMoveEnemyDown;
         }
@@ -65,10 +69,15 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isAlive)
-        {
+        gameOver = GameManager.instance.getGameOverVariable();
 
+        if (isAlive && gameOver != true)
+        {
             MoveEnemy();
+        }
+        else
+        {
+            enemy_rb.linearVelocity = Vector2.zero;
         }
     }
 
@@ -76,21 +85,6 @@ public class EnemyMovement : MonoBehaviour
     {
         return enemy_rb.position;
     }
-
-
-    private void OnMoveEnemyDown()
-    {
-        //Debug.Log("Moving the enemy down now");
-
-        moveLeft = !moveLeft;
-
-        Vector2 enemyCurrentPos = enemy_rb.position;
-
-        enemy_rb.position = new Vector2(enemyCurrentPos.x , enemyCurrentPos.y - enemyDropDownDistance);
-
-
-    }
-
 
     public void Edge_of_Screen_Reached(float edge)
     {
@@ -105,9 +99,6 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D colission)
     {
-
-        //Debug.Log(colission.name);
-
         if (colission.CompareTag("Bullet"))
         {
             //Debug.Log("Enemy was hit");
@@ -118,8 +109,6 @@ public class EnemyMovement : MonoBehaviour
 
             Destroy(gameObject);
         }
-
-        
     }
 
 
@@ -140,15 +129,26 @@ public class EnemyMovement : MonoBehaviour
         {
             Edge_of_Screen_Reached(viewPortPos.x);
         }
-       
+
         if (moveLeft)
         {
-            enemy_rb.linearVelocity = new Vector2( - initial_Move_Speed, 0f);
+            enemy_rb.linearVelocity = new Vector2(-initial_Move_Speed, 0f);
         }
         else
         {
             enemy_rb.linearVelocity = new Vector2(initial_Move_Speed, 0f);
         }
-        
+
+    }
+
+    private void OnMoveEnemyDown()
+    {
+        //Debug.Log("Moving the enemy down now");
+
+        moveLeft = !moveLeft;
+
+        Vector2 enemyCurrentPos = enemy_rb.position;
+
+        enemy_rb.position = new Vector2(enemyCurrentPos.x, enemyCurrentPos.y - enemyDropDownDistance);
     }
 }
