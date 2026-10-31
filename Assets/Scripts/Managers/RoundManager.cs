@@ -10,10 +10,13 @@ public class RoundManager : MonoBehaviour
     [Header("Text Fields")]
     [SerializeField] private TextMeshProUGUI roundTextField;
     [SerializeField] private TextMeshProUGUI gameOverTextField;
+    [SerializeField] private TextMeshProUGUI livesTextField;
+
 
 
 
     [SerializeField] private int round = 0;
+    [SerializeField] private int current_Lives = 3;
 
 
     void Awake()
@@ -33,6 +36,7 @@ public class RoundManager : MonoBehaviour
     {
         roundTextField.text = "Round: " + round.ToString();
         gameOverTextField.text = null;
+        livesTextField.text = "Lives: " + current_Lives.ToString();
 
     }
 
@@ -47,6 +51,13 @@ public class RoundManager : MonoBehaviour
     {
         round = new_round;
         roundTextField.text = "Round: " + round.ToString();
+    }
+
+    public void ChangeLivesCounter(int lives)
+    {
+        current_Lives = lives;
+        livesTextField.text = "Lives: " + current_Lives.ToString();
+
     }
 
 

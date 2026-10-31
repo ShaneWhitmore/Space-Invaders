@@ -183,7 +183,6 @@ public class GameManager : MonoBehaviour
             spawnedEnemies++;
 
             //Debug.Log(spawnedEnemies);
-
         }
     }
 
@@ -208,6 +207,8 @@ public class GameManager : MonoBehaviour
         else
         {
             //Coroutine
+
+            RoundManager.instance.ChangeLivesCounter(playerLives);
         }
 
     }
