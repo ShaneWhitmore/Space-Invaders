@@ -93,6 +93,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void Enemy_Destroyed()
     {
+        AudioManager.instance.PlayExplosionAudioClip();
         Enemy_Was_Destroyed?.Invoke();
     }
 
@@ -106,6 +107,7 @@ public class EnemyMovement : MonoBehaviour
 
             isAlive = false;
             Enemy_Destroyed();
+
 
             Destroy(gameObject);
         }
