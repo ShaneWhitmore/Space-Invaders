@@ -10,6 +10,8 @@ public class RoundManager : MonoBehaviour
     [Header("Text Fields")]
     [SerializeField] private TextMeshProUGUI roundTextField;
     [SerializeField] private TextMeshProUGUI gameOverTextField;
+    [SerializeField] private TextMeshProUGUI retryTextField;
+
     [SerializeField] private TextMeshProUGUI livesTextField;
 
 
@@ -37,6 +39,7 @@ public class RoundManager : MonoBehaviour
         roundTextField.text = "Round: " + round.ToString();
         gameOverTextField.text = null;
         livesTextField.text = "Lives: " + current_Lives.ToString();
+        retryTextField.text = null;
 
     }
 
@@ -66,13 +69,12 @@ public class RoundManager : MonoBehaviour
         if (isGameOver)
         {
             gameOverTextField.text = "Game Over";
+            retryTextField.text = "Press 'Space Bar' to retry";
         }
         else
         {
             gameOverTextField.text = null;
-
+            retryTextField.text = null;
         }
-
-
     }
 }
