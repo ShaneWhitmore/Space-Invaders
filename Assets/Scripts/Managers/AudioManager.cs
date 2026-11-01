@@ -8,6 +8,8 @@ public class AudioManager : MonoBehaviour
 
     [Header("Audio Clips")]
     [SerializeField] private AudioClip laserAudioClip;
+    [SerializeField] private AudioClip explosionAudioClip;
+
     [SerializeField] private AudioClip musicAudioClip;
 
 
@@ -48,9 +50,15 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic()
     {
-        if(!musicAudioSource.isPlaying)
+        if (!musicAudioSource.isPlaying)
         {
             musicAudioSource.PlayOneShot(musicAudioClip);
         }
+    }
+
+
+    public void PlayExplosionAudioClip()
+    {
+        laserAudioSource.PlayOneShot(explosionAudioClip);
     }
 }
