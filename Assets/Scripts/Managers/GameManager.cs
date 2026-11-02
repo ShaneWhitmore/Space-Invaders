@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,9 +12,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance { get; private set; }
 
-    [SerializeField] private GameOverTarget gameOverTarget;
-    [SerializeField] private EnemyMovement enemyMovement;
-    [SerializeField] private Transform enemySpawnPoint;
+    
 
 
     [SerializeField] private bool edge_detection_invocation = false;
@@ -40,9 +39,25 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int spawnedEnemies = 0;
 
+    [SerializeField] private List<Rigidbody2D> liveEnemyBullets = null;
+
+
+    [SerializeField] private int maxNumberOfEnemyBullets = 7;
+
+
+    [SerializeField] private GameOverTarget gameOverTarget;
+    [SerializeField] private EnemyMovement enemyMovement;
+    [SerializeField] private Transform enemySpawnPoint;
+
+
+
+
 
     [Header("Player Variables")]
     [SerializeField] private int playerLives = 3;
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private Transform playerSpawnPoint;
+
 
 
 
@@ -225,14 +240,36 @@ public class GameManager : MonoBehaviour
         {
             RoundManager.instance.ChangeLivesCounter(playerLives);
         }
-
     }
+
+    
+
+    public Vector2 ReturnPlayerCoordinates()
+    {
+        return playerMovement.ReturnPlayerCoordinates();
+    }
+
+    public void IncrementAliveEnemyBullets(Rigidbody2D enemyBullet)
+    {
+        liveEnemyBullets.Add(enemyBullet);
+    }
+
+
+    public bool ReturnBoolAliveEnemyBullets()
+    {
+        if (liveEnemyBullets.Count < maxNumberOfEnemyBullets)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+
 
     private IEnumerator Restart()
     {
         gameOver = false;
-
-
         RoundManager.instance.GameOver(gameOver);
 
         //Restart Scene
@@ -248,21 +285,13 @@ public class GameManager : MonoBehaviour
         // Disable Enemy movement
 
         PlayerInput_Manager.instance.OnGameOver();
-
-
         //set some bool value to true for gameOver , check this against a button press in the Update method to restart the game
         // Display "Game Over"
         //Stop the Game
-
-
-
-
-
         gameOver = true;
         RoundManager.instance.GameOver(gameOver);
 
         yield return null;
 
     }
-
 }

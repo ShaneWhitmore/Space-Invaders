@@ -64,4 +64,9 @@ public class PlayerMovement : MonoBehaviour
 
         }
     }
+
+    public Vector2 ReturnPlayerCoordinates()
+    {
+        return ShipRb.position;
+    }
 }
