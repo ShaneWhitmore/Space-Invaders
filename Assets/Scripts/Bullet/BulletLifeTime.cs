@@ -17,10 +17,22 @@ public class BulletLifeTime : MonoBehaviour
     void Update()
     {
         Vector3 viewPortPos = Camera.main.WorldToViewportPoint(transform.position);
-        if(viewPortPos.y > 1)
+
+        Debug.Log(gameObject.tag + " " + viewPortPos.y);
+        if (viewPortPos.y > 1 || viewPortPos.y < 0)
         {
-            Destroy(gameObject);
+            DestroyGameObject();
         }
 
+    }
+
+
+    private void DestroyGameObject()
+    {
+        if (gameObject.CompareTag("EnemyBullet"))
+        {
+            GameManager.instance.DecrementAliveEnemyBullets();
+        }
+        Destroy(gameObject);
     }
 }

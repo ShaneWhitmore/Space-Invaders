@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int spawnedEnemies = 0;
 
-    [SerializeField] private List<Rigidbody2D> liveEnemyBullets = null;
+    [SerializeField] private int liveEnemyBullets = 0;
 
 
     [SerializeField] private int maxNumberOfEnemyBullets = 7;
@@ -113,8 +113,16 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
-        if (gameObject && PlayerInput_Manager.instance.WasRestartPressedThisFrame())
+        if(gameOver)
         {
+            Debug.Log("Game Over? =" + gameOver);
+            Debug.Log("Player should press space bar to restart");
+        }
+
+
+        if (gameOver && PlayerInput_Manager.instance.WasRestartPressedThisFrame())
+        {
+            Debug.Log("Game over and space was pressed , restarting game now");
             StartCoroutine(Restart());
         }
 
@@ -182,7 +190,7 @@ public class GameManager : MonoBehaviour
         RoundManager.instance.ChangeRound(round);
 
 
-        Debug.Log("NEW ROUND: " + round);
+        // Debug.Log("NEW ROUND: " + round);
     }
 
 
@@ -256,19 +264,34 @@ public class GameManager : MonoBehaviour
 
     public Vector2 ReturnPlayerCoordinates()
     {
-        //PlayerMovement player = playerMovement.GetComponent<PlayerMovement>();
-        return playerMovement.ReturnPlayerCoordinates();
+        if (player != null)
+        {
+            return playerMovement.ReturnPlayerCoordinates();
+
+        }
+        return new Vector2(0,0);
     }
 
-    public void IncrementAliveEnemyBullets(Rigidbody2D enemyBullet)
+    public void IncrementAliveEnemyBullets()
     {
-        liveEnemyBullets.Add(enemyBullet);
+        if (liveEnemyBullets < maxNumberOfEnemyBullets)
+        {
+            liveEnemyBullets++;
+        }
+    }
+
+    public void DecrementAliveEnemyBullets()
+    {
+        if (liveEnemyBullets != 0)
+        {
+            liveEnemyBullets--;
+        }
     }
 
 
     public bool ReturnBoolAliveEnemyBullets()
     {
-        if (liveEnemyBullets.Count < maxNumberOfEnemyBullets)
+        if (liveEnemyBullets < maxNumberOfEnemyBullets)
         {
             return true;
         }
