@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,9 +12,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance { get; private set; }
 
-    [SerializeField] private GameOverTarget gameOverTarget;
-    [SerializeField] private EnemyMovement enemyMovement;
-    [SerializeField] private Transform enemySpawnPoint;
+
 
 
     [SerializeField] private bool edge_detection_invocation = false;
@@ -40,22 +39,34 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int spawnedEnemies = 0;
 
+    [SerializeField] private List<Rigidbody2D> liveEnemyBullets = null;
+
+
+    [SerializeField] private int maxNumberOfEnemyBullets = 7;
+
+
+    [SerializeField] private GameOverTarget gameOverTarget;
+    [SerializeField] private EnemyMovement enemyMovement;
+    [SerializeField] private Transform enemySpawnPoint;
+
+
+
+
 
     [Header("Player Variables")]
     [SerializeField] private int playerLives = 3;
+    [SerializeField] private PlayerMovement playerMovement;
 
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private Transform playerSpawnPoint;
+
+    private GameObject player;
 
 
 
     // game manager should spawn a fixed number of enemies, when an enemy dies it should invoke a method to inform the manager it died
     // Game manager should have a method to subtract the number of enemies 
     // if the number of enemies is 0 , move to next level (increment a level variable) which can be used for handling special enemies spawning once per round
-
-
-
-
-
-
 
     void Awake()
     {
@@ -207,32 +218,69 @@ public class GameManager : MonoBehaviour
     {
         //Disable Player Movement
         // Invoke Game Over method
-
-        Debug.Log("Enemy entered end (called from gameManager)");
         StartCoroutine(GameOver());
     }
 
 
-    void RespawnPlayer()
+    public void RespawnPlayer()
     {
+
         playerLives--;
+        RoundManager.instance.ChangeLivesCounter(playerLives);
+
 
         if (playerLives == 0)
         {
-            GameOver();
+            StartCoroutine(GameOver());
         }
         else
         {
-            RoundManager.instance.ChangeLivesCounter(playerLives);
+            StartCoroutine(Respawn());
         }
-
     }
+
+
+    private IEnumerator Respawn()
+    {
+
+        yield return new WaitForSeconds(1f);
+
+        player = Instantiate(playerPrefab, playerSpawnPoint.position, playerSpawnPoint.rotation);
+        playerMovement = player.GetComponent<PlayerMovement>();
+        playerMovement.InitializePlayer(this);
+
+        yield return null;
+    }
+
+
+
+    public Vector2 ReturnPlayerCoordinates()
+    {
+        //PlayerMovement player = playerMovement.GetComponent<PlayerMovement>();
+        return playerMovement.ReturnPlayerCoordinates();
+    }
+
+    public void IncrementAliveEnemyBullets(Rigidbody2D enemyBullet)
+    {
+        liveEnemyBullets.Add(enemyBullet);
+    }
+
+
+    public bool ReturnBoolAliveEnemyBullets()
+    {
+        if (liveEnemyBullets.Count < maxNumberOfEnemyBullets)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+
 
     private IEnumerator Restart()
     {
         gameOver = false;
-
-
         RoundManager.instance.GameOver(gameOver);
 
         //Restart Scene
@@ -248,21 +296,13 @@ public class GameManager : MonoBehaviour
         // Disable Enemy movement
 
         PlayerInput_Manager.instance.OnGameOver();
-
-
         //set some bool value to true for gameOver , check this against a button press in the Update method to restart the game
         // Display "Game Over"
         //Stop the Game
-
-
-
-
-
         gameOver = true;
         RoundManager.instance.GameOver(gameOver);
 
         yield return null;
 
     }
-
 }
