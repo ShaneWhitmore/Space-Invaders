@@ -10,6 +10,12 @@ public class EnemyShootingScript : MonoBehaviour
 
     [SerializeField] private float playerIngageThreshold = 0.5f;
 
+    [SerializeField] private float bulletCooldown = 3f;
+
+    [SerializeField] private float nextShootTime = 0f;
+
+
+
 
     [SerializeField] private Rigidbody2D enemyRb;
 
@@ -33,11 +39,18 @@ public class EnemyShootingScript : MonoBehaviour
         Vector2 enemyCoords = enemyRb.position;
 
 
-
-        if (enemyCoords.x <= (playerCoords.x + playerIngageThreshold) && enemyCoords.x >= (playerCoords.x - playerIngageThreshold))
+        if (Time.time >= nextShootTime)
         {
-            //Debug.Log("Enemy within the range of the players x coordinates");
-            CheckCurrentEnemyBulletsCount();
+            if (playerCoords != new Vector2(0, 0))
+            {
+                if (enemyCoords.x <= (playerCoords.x + playerIngageThreshold) && enemyCoords.x >= (playerCoords.x - playerIngageThreshold))
+                {
+                    //Debug.Log("Enemy within the range of the players x coordinates");
+                    CheckCurrentEnemyBulletsCount();
+                }
+            }
+
+            nextShootTime = Time.time + bulletCooldown;
         }
 
     }
@@ -67,7 +80,7 @@ public class EnemyShootingScript : MonoBehaviour
 
         AudioManager.instance.PlayLaserAudioClip();
         bullet.AddForce(bulletVelocity * -transform.up, ForceMode2D.Impulse);
-        GameManager.instance.IncrementAliveEnemyBullets(bullet);
+        GameManager.instance.IncrementAliveEnemyBullets();
 
     }
 }

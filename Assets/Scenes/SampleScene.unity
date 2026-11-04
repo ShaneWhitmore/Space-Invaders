@@ -956,7 +956,7 @@ MonoBehaviour:
   enemysToSpawn: 11
   enemySpawnOffset: 1.5
   spawnedEnemies: 0
-  liveEnemyBullets: []
+  liveEnemyBullets: 0
   maxNumberOfEnemyBullets: 7
   gameOverTarget: {fileID: 2082875926}
   enemyMovement: {fileID: 3948033291035283933, guid: 8b7088dcff471e34b8f1ba85bfea3aee, type: 3}
@@ -1332,7 +1332,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 233188490270714795, guid: 1452dc41a12bca34f9db012ec902bafa, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.74
       objectReference: {fileID: 0}
     - target: {fileID: 233188490270714795, guid: 1452dc41a12bca34f9db012ec902bafa, type: 3}
       propertyPath: m_LocalPosition.x

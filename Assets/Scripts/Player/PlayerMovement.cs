@@ -36,10 +36,10 @@ public class PlayerMovement : MonoBehaviour
 
     void OnDisable()
     {
-        if (PlayerInput_Manager.instance != null)
-        {
-            PlayerInput_Manager.instance.OnDisable();
-        }
+        // if (PlayerInput_Manager.instance != null)
+        // {
+        //     PlayerInput_Manager.instance.OnDisable();
+        // }
     }
 
 
