@@ -4,13 +4,11 @@ public class EnemyShootingScript : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    [SerializeField] private PlayerMovement playerMovement;
-
     [SerializeField] private Transform bulletSpawner;
     [SerializeField] private Rigidbody2D bulletPrefab;
     [SerializeField] private float bulletVelocity = 3f;
 
-    [SerializeField] private float playerIngageThreshold = 2f;
+    [SerializeField] private float playerIngageThreshold = 0.5f;
 
 
     [SerializeField] private Rigidbody2D enemyRb;
@@ -36,9 +34,9 @@ public class EnemyShootingScript : MonoBehaviour
 
 
 
-        if (enemyCoords.x <= (playerCoords.x + playerIngageThreshold) || enemyCoords.x >= (playerCoords.x - playerIngageThreshold))
+        if (enemyCoords.x <= (playerCoords.x + playerIngageThreshold) && enemyCoords.x >= (playerCoords.x - playerIngageThreshold))
         {
-            Debug.Log("Enemy within the range of the players x coordinates");
+            //Debug.Log("Enemy within the range of the players x coordinates");
             CheckCurrentEnemyBulletsCount();
         }
 

@@ -176,7 +176,8 @@ MonoBehaviour:
   bulletSpawner: {fileID: 7592503939125516237}
   bulletPrefab: {fileID: -3232348229662015085, guid: 9345f2a29e4f58a4eb1c3d9c2c2a2e64, type: 3}
   bulletVelocity: 5
-  playerIngageThreshold: 2
+  playerIngageThreshold: 0.5
+  enemyRb: {fileID: 502328633313739338}
 --- !u!1 &4244651472979832671
 GameObject:
   m_ObjectHideFlags: 0

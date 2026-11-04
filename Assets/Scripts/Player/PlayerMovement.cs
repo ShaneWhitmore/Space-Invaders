@@ -6,16 +6,25 @@ public class PlayerMovement : MonoBehaviour
 {
 
 
-    [SerializeField] private Rigidbody ShipRb;
+    [SerializeField] private Rigidbody2D ShipRb;
     public bool isAlive = true;
     [SerializeField] private float shipAcceleration = 5f;
+
+    [SerializeField] private GameManager gameManager;
 
 
 
     void Start()
     {
-        ShipRb = GetComponent<Rigidbody>();
+        ShipRb = GetComponent<Rigidbody2D>();
+
     }
+
+    public void InitializePlayer(GameManager gm)
+    {
+        gameManager = gm;        
+    }
+ 
 
     void OnEnable()
     {
@@ -68,5 +77,22 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 ReturnPlayerCoordinates()
     {
         return ShipRb.position;
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(collision.tag);
+        
+
+        if(collision.CompareTag("EnemyBullet") && isAlive)
+        {
+            //Player has been hit with an enemy bullet, inform the game manager so a life can be deducted and the player can be respawned
+
+            isAlive = false;
+            GameManager.instance.RespawnPlayer();
+            Destroy(gameObject);
+            
+        }
     }
 }
