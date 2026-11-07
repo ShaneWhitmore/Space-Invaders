@@ -27,6 +27,9 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float enemyDropDownDistance = 0.5f;
 
 
+    [SerializeField] private int enemyPoints = 10;
+
+
     [Header("Game Variables")]
     [SerializeField] private bool gameOver;
 
@@ -107,6 +110,7 @@ public class EnemyMovement : MonoBehaviour
 
             isAlive = false;
             Enemy_Destroyed();
+            GameManager.instance.IncrementPoints(enemyPoints);
 
 
             Destroy(gameObject);

@@ -13,12 +13,17 @@ public class RoundManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI retryTextField;
 
     [SerializeField] private TextMeshProUGUI livesTextField;
+    [SerializeField] private TextMeshProUGUI pointsTextField;
+
 
 
 
 
     [SerializeField] private int round = 0;
     [SerializeField] private int current_Lives = 3;
+    [SerializeField] private int current_Points = 0;
+
+
 
 
     void Awake()
@@ -40,6 +45,7 @@ public class RoundManager : MonoBehaviour
         gameOverTextField.text = null;
         livesTextField.text = "Lives: " + current_Lives.ToString();
         retryTextField.text = null;
+        pointsTextField.text = "Points: " + current_Points.ToString();
 
     }
 
@@ -61,6 +67,12 @@ public class RoundManager : MonoBehaviour
         current_Lives = lives;
         livesTextField.text = "Lives: " + current_Lives.ToString();
 
+    }
+
+    public void ChangePoints(int points)
+    {
+        current_Points = points;
+        pointsTextField.text = "Points: " + current_Points.ToString();
     }
 
 

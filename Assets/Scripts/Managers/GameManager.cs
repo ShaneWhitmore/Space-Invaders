@@ -27,6 +27,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int round = 0;
     [SerializeField] private bool gameOver;
 
+    [SerializeField] private int points = 0;
+
+
+
 
 
 
@@ -94,6 +98,7 @@ public class GameManager : MonoBehaviour
         gameOverTarget.enemyEnteredTarget += OnEnemyEnteredGameOver;
         gameOver = false;
         playerLives = 3;
+        points = 0;
     }
 
     void OnDestroy()
@@ -113,7 +118,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 
-        if(gameOver)
+        if (gameOver)
         {
             Debug.Log("Game Over? =" + gameOver);
             Debug.Log("Player should press space bar to restart");
@@ -193,6 +198,13 @@ public class GameManager : MonoBehaviour
         // Debug.Log("NEW ROUND: " + round);
     }
 
+    public void IncrementPoints(int newPoints)
+    {
+        points += newPoints;
+
+        RoundManager.instance.ChangePoints(points);
+    }
+
 
     void SpawnNewEnemies()
     {
@@ -269,7 +281,7 @@ public class GameManager : MonoBehaviour
             return playerMovement.ReturnPlayerCoordinates();
 
         }
-        return new Vector2(0,0);
+        return new Vector2(0, 0);
     }
 
     public void IncrementAliveEnemyBullets()
