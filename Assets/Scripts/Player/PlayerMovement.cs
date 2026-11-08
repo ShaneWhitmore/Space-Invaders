@@ -90,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
             //Player has been hit with an enemy bullet, inform the game manager so a life can be deducted and the player can be respawned
 
             isAlive = false;
+            AudioManager.instance.PlayPlayerExplosionAudioClip();
             GameManager.instance.RespawnPlayer();
             Destroy(gameObject);
             

@@ -79,7 +79,7 @@ public class EnemyShootingScript : MonoBehaviour
 
         //Play audio source of bullet firing , (make it a more aggresive sound so the player can differentiate between their bullets and the enemy bullets)
 
-        AudioManager.instance.PlayLaserAudioClip();
+        AudioManager.instance.PlayEnemyLaserAudioClip();
         bullet.AddForce(bulletVelocity * -transform.up, ForceMode2D.Impulse);
         GameManager.instance.IncrementAliveEnemyBullets();
 

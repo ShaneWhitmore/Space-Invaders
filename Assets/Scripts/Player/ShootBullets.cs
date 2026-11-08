@@ -42,7 +42,7 @@ public class ShootBullets : MonoBehaviour
 
                 //Play audio source of bullet firing 
 
-                AudioManager.instance.PlayLaserAudioClip();
+                AudioManager.instance.PlayPlayerLaserAudioClip();
                 bullet.AddForce(bulletVelocity * transform.up, ForceMode2D.Impulse);
 
             }
