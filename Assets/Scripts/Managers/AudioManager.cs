@@ -8,7 +8,12 @@ public class AudioManager : MonoBehaviour
 
     [Header("Audio Clips")]
     [SerializeField] private AudioClip laserAudioClip;
-    [SerializeField] private AudioClip explosionAudioClip;
+    [SerializeField] private AudioClip playerExplosionAudioClip;
+
+    [SerializeField] private AudioClip enemyLaserAudioClip;
+
+    [SerializeField] private AudioClip enemyExplosionAudioClip;
+
 
     [SerializeField] private AudioClip musicAudioClip;
 
@@ -42,9 +47,15 @@ public class AudioManager : MonoBehaviour
 
 
 
-    public void PlayLaserAudioClip()
+    public void PlayPlayerLaserAudioClip()
     {
         laserAudioSource.PlayOneShot(laserAudioClip);
+    }
+
+
+    public void PlayEnemyLaserAudioClip()
+    {
+        laserAudioSource.PlayOneShot(enemyLaserAudioClip);
     }
 
 
@@ -57,8 +68,14 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    public void PlayExplosionAudioClip()
+    public void PlayEnemyExplosionAudioClip()
     {
-        laserAudioSource.PlayOneShot(explosionAudioClip);
+        laserAudioSource.PlayOneShot(enemyExplosionAudioClip);
+    }
+
+
+    public void PlayPlayerExplosionAudioClip()
+    {
+        laserAudioSource.PlayOneShot(playerExplosionAudioClip);
     }
 }

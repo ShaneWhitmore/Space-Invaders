@@ -96,7 +96,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void Enemy_Destroyed()
     {
-        AudioManager.instance.PlayExplosionAudioClip();
+        AudioManager.instance.PlayEnemyExplosionAudioClip();
         Enemy_Was_Destroyed?.Invoke();
     }
 
