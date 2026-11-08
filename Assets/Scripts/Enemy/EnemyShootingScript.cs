@@ -43,6 +43,7 @@ public class EnemyShootingScript : MonoBehaviour
         {
             if (playerCoords != new Vector2(0, 0))
             {
+                Debug.Log(playerCoords);
                 if (enemyCoords.x <= (playerCoords.x + playerIngageThreshold) && enemyCoords.x >= (playerCoords.x - playerIngageThreshold))
                 {
                     //Debug.Log("Enemy within the range of the players x coordinates");

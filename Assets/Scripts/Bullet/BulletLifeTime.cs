@@ -18,7 +18,6 @@ public class BulletLifeTime : MonoBehaviour
     {
         Vector3 viewPortPos = Camera.main.WorldToViewportPoint(transform.position);
 
-        Debug.Log(gameObject.tag + " " + viewPortPos.y);
         if (viewPortPos.y > 1 || viewPortPos.y < 0)
         {
             DestroyGameObject();
