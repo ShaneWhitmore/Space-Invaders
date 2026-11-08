@@ -20,7 +20,7 @@ public class RoundManager : MonoBehaviour
 
 
     [SerializeField] private int round = 0;
-    [SerializeField] private int current_Lives = 3;
+    [SerializeField] private int current_Lives = 4;
     [SerializeField] private int current_Points = 0;
 
 
@@ -41,6 +41,7 @@ public class RoundManager : MonoBehaviour
 
     void Start()
     {
+        current_Lives = GameManager.instance.ReturnPlayerLivesCount();
         roundTextField.text = "Round: " + round.ToString();
         gameOverTextField.text = null;
         livesTextField.text = "Lives: " + current_Lives.ToString();

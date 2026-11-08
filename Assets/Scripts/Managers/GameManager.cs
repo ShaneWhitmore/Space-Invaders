@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
 
 
     [Header("Player Variables")]
-    [SerializeField] private int playerLives = 3;
+    [SerializeField] private int playerLives = 4;
     [SerializeField] private PlayerMovement playerMovement;
 
     [SerializeField] private GameObject playerPrefab;
@@ -97,8 +97,9 @@ public class GameManager : MonoBehaviour
     {
         gameOverTarget.enemyEnteredTarget += OnEnemyEnteredGameOver;
         gameOver = false;
-        playerLives = 3;
         points = 0;
+
+        RespawnPlayer();
     }
 
     void OnDestroy()
@@ -279,7 +280,6 @@ public class GameManager : MonoBehaviour
         if (player != null)
         {
             return playerMovement.ReturnPlayerCoordinates();
-
         }
         return new Vector2(0, 0);
     }
@@ -308,6 +308,11 @@ public class GameManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public int ReturnPlayerLivesCount()
+    {
+        return playerLives;
     }
 
 
